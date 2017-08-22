@@ -1,4 +1,4 @@
-{include file="header.tpl" title=Pumps}
+{include file="header.tpl" title="Pumps" onLoad="NewPumpSched()"}
 
 <table align="center">
 	<tr>
@@ -37,14 +37,64 @@
 			</table>
 		</td>
 	</tr>
+</table>
+<br/>
+<form action="pumps.php?func=insertpumpjob" method="post" enctype="multipart/form-data">
+<table align="center">
 	<tr>
 		<th>Manual Pump</th>
 	</tr>
 	<tr>
 		<td>
-		
+			<div align=left>
+				<button type="button" onclick="NewPumpSched()">Add Row</button>
+				</br>
+			</div>
+			<table id="PumpSchedTable" border="1" cellspacing="0">
+			  <tr>
+				<th style="width: 150px">Pump</td>
+				<th style="width: 150px">Add ml</td>
+				<th style="width: 100px">Options</td>
+			  </tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			</br>
+			<button type="submit">Submit Manual Pump Job</button>
 		</td>
 	</tr>
 </table>
+</form>
+
+<script>
+function NewPumpSched() {
+	
+    var table = document.getElementById("PumpSchedTable");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var pumps = {$pumps|json_encode};
+	var selectList = document.createElement("select");
+	selectList.setAttribute("id", "mySelect");
+	selectList.setAttribute("name", "pumpsched[id][]");
+	for(var i = 0;i<pumps.length;i++){
+	
+		var option = document.createElement("option");
+		option.setAttribute("value", pumps[i].id);
+		option.text = pumps[i].name;
+		selectList.appendChild(option);
+	}	
+	cell1.appendChild(selectList);
+	cell2.innerHTML = '<input name="pumpsched[addml][]" value=0>'
+    cell3.innerHTML = '<button type="button" onclick="DeleteTableRow(this)">Delete</button>';
+}
+function DeleteTableRow(o) {
+	var p=o.parentNode.parentNode;
+	p.parentNode.removeChild(p);
+}
+</script>
 
 {include file="footer.tpl"}

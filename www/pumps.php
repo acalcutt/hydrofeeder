@@ -7,6 +7,24 @@ $db = new SQLite3('/opt/hydrofeeder/hydrofeeder.sqlite');
 $func=$_GET['func'];
 switch($func)
 {
+	case "insertpumpjob":
+		$pumpsched = $_REQUEST['pumpsched'];
+		$count = 0;
+		foreach ($pumpsched[id] as $row) {
+			$pump_id = $pumpsched[id][$count];
+			$pump_addml = $pumpsched[addml][$count];
+
+			$stmt = $db->prepare('INSERT INTO grow_pump_manual (grow_id, pump_id, add_ml, in_progress) VALUES (:grow_id, :pump_id, :add_ml, :in_progress)');
+			$stmt->bindValue(':grow_id', 0, SQLITE3_INTEGER);
+			$stmt->bindValue(':pump_id', $pump_id, SQLITE3_INTEGER);
+			$stmt->bindValue(':add_ml', $pump_addml, SQLITE3_INTEGER);
+			$stmt->bindValue(':in_progress', 0, SQLITE3_TEXT);
+			$results = $stmt->execute();
+			
+			$count++;
+		}
+		header("Location: pumps.php");
+		break;
 	case "add":
 		$pumpinfo['name'] = "";
 		$pumpinfo['gpio'] = "";
