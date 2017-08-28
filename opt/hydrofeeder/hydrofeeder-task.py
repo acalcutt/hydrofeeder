@@ -17,9 +17,9 @@ con = lite.connect('/opt/hydrofeeder/hydrofeeder.sqlite')
 #Set Email Settings
 mailserver = smtplib.SMTP('smtp.gmail.com', 587)
 mailserver.starttls()
-mailserver.login("pialerts@techidiots.net", "<gU5KN9Q<gU5KN9Q")
-mailfrom = "pialerts@techidiots.net"
-mailto = "acalcutt@techidiots.net"
+mailserver.login("user@email.com", "notthepassword")
+mailfrom = "user@email.com"
+mailto = "dest@email.com"
 body = ""
 
 datestamp = datetime.datetime.now() # some timestamp
